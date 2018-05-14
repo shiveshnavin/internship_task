@@ -9,11 +9,41 @@ admin.initializeApp(functions.config().firebase);
 // exports.helloWorld = functions.https.onRequest((request, response) => {
 //  response.send("Hello from Firebase!");
 // });
+const list=array[]
+list.push('Ajay')
+list.push('Brande Carnahan')
+list.push('Kenton Primo')
+list.push('Chae Limon')
+list.push('Thu Lantigua')
+list.push('Rebecka Heid')
+list.push('Dusti Ambriz')
+list.push('Ewa Lorenzana')
+list.push('Eunice Escarcega')
+list.push('Alease Denmark')
+list.push('Rubin Muscarella')
+list.push('Miranda Pender') 
 
 exports.dml_viewall= functions.https.onRequest((request, response) => {
 
+
+
+    console.log('Request Made ');
+
+    admin.database().ref('/domilearn').once('value').then(function(snap){
+
  
-  response.send("Hello from Firebase!");
+        response.write('Current Name is : '+JSON.stringify(snap.name));
+        response.write('<br>Other Names are : <br>');
+
+        var names=snap.names.val()
+        names.forEach(element => {
+            
+         response.write('<br>'+element);
+
+        });
+        response.end()
+
+    });
 
 
 });
@@ -21,7 +51,32 @@ exports.dml_viewall= functions.https.onRequest((request, response) => {
 exports.dml_update= functions.https.onRequest((request, response) => {
 
  
-  response.send("Hello from Firebase!");
+    admin.database().ref('/domilearn').once('value').then(function(snap){
+
+        var randomIndex=Math.random(0,list.length())
+        response.write('Current Name was : '+JSON.stringify(snap.name));
+        response.write('<br>Set New Name to : '+JSON.stringify(snap.names[randomIndex]));
+        admin.database().ref('/domilearn/name').set(snap.names[randomIndex])
+        response.end()
+
+    })
+
+
+});
+
+exports.dml_reset= functions.https.onRequest((request, response) => {
+
+  var re={
+      name:list[0],
+      list:list
+  }
+  admin.database().ref('/domilearn').set(re);
+
+  var send={
+      status:"Reset Success",
+      data:re
+  }
+  response.send(send);
 
 
 });
