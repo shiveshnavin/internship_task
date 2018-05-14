@@ -9,7 +9,7 @@ admin.initializeApp(functions.config().firebase);
 // exports.helloWorld = functions.https.onRequest((request, response) => {
 //  response.send("Hello from Firebase!");
 // });
-const list=array[]
+const list=[]
 list.push('Ajay')
 list.push('Brande Carnahan')
 list.push('Kenton Primo')
