@@ -25,8 +25,9 @@ list.push('Miranda Pender')
 
 exports.dml_viewall= functions.https.onRequest((request, response) => {
 
- 
 
+
+ 
     admin.database().ref('/domilearn').once('value').then(function(snap){
         
         var data=snap.val()
@@ -49,10 +50,8 @@ exports.dml_viewall= functions.https.onRequest((request, response) => {
     });
 
 
-});
-function generateRandomInteger(min, max) {
-    return Math.floor(min + Math.random()*(max+1 - min))
-  }
+}); 
+
 exports.dml_update= functions.https.onRequest((request, response) => {
 
  
@@ -61,7 +60,7 @@ exports.dml_update= functions.https.onRequest((request, response) => {
         response.write('<html><title>Update Name</title><body>')
         var data=snap.val();
 
-        var randomIndex=generateRandomInteger(0,data.list.length);
+        var randomIndex=Math.floor(Math.random() * data.list.length) + 0  
  
         response.write('Current Name was : '+'<b>'+ (data.name)+'</b>');
         response.write('<br>Set New Name to : '+'<b>'+ (data.list[randomIndex])+'</b>');
