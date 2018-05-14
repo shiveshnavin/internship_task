@@ -25,9 +25,7 @@ list.push('Miranda Pender')
 
 exports.dml_viewall= functions.https.onRequest((request, response) => {
 
-
-
-    console.log('Request Made ');
+ 
 
     admin.database().ref('/domilearn').once('value').then(function(snap){
         
@@ -64,13 +62,9 @@ exports.dml_update= functions.https.onRequest((request, response) => {
         var data=snap.val();
 
         var randomIndex=generateRandomInteger(0,data.list.length);
-
-        console.log(JSON.stringify(data.list.length))
-        console.log(JSON.stringify(data.list))
-        console.log(JSON.stringify(randomIndex))
-        console.log(JSON.stringify(data.list[randomIndex]))
-        response.write('Current Name was : '+'<b>'+JSON.stringify(data.name)+'</b>');
-        response.write('<br>Set New Name to : '+'<b>'+JSON.stringify(data.list[randomIndex])+'</b>');
+ 
+        response.write('Current Name was : '+'<b>'+ (data.name)+'</b>');
+        response.write('<br>Set New Name to : '+'<b>'+ (data.list[randomIndex])+'</b>');
         admin.database().ref('/domilearn/name').set(data.list[randomIndex])
         response.write('</html></body>')
         response.end()
