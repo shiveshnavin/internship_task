@@ -52,7 +52,9 @@ exports.dml_viewall= functions.https.onRequest((request, response) => {
 
 
 });
-
+function generateRandomInteger(min, max) {
+    return Math.floor(min + Math.random()*(max+1 - min))
+  }
 exports.dml_update= functions.https.onRequest((request, response) => {
 
  
@@ -60,7 +62,13 @@ exports.dml_update= functions.https.onRequest((request, response) => {
 
         response.write('<html><title>Update Name</title><body>')
         var data=snap.val();
-        var randomIndex=Math.random(0,data.list.size())
+
+        var randomIndex=generateRandomInteger(0,data.list.length);
+
+        console.log(JSON.stringify(data.list.length))
+        console.log(JSON.stringify(data.list))
+        console.log(JSON.stringify(randomIndex))
+        console.log(JSON.stringify(data.list[randomIndex]))
         response.write('Current Name was : '+'<b>'+JSON.stringify(data.name)+'</b>');
         response.write('<br>Set New Name to : '+'<b>'+JSON.stringify(data.list[randomIndex])+'</b>');
         admin.database().ref('/domilearn/name').set(data.list[randomIndex])
