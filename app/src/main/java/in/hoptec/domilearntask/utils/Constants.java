@@ -7,7 +7,7 @@ package in.hoptec.domilearntask.utils;
 public class Constants {
 
     public static String DB_BASE_REF="domilearn";
-    public static String WEB_URL="domilearn";
+    public static String WEB_URL="https://us-central1-test-a0930.cloudfunctions.net/dml_update";
 
 
 }
