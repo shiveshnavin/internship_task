@@ -30,8 +30,19 @@ exports.dml_viewall= functions.https.onRequest((request, response) => {
     console.log('Request Made ');
 
     admin.database().ref('/domilearn').once('value').then(function(snap){
+        response.send(JSON.stringify(snap))
+        var data=snap.val()
+        
 
  
+        response.write('Current Name is : '+JSON.stringify(data.name));/*
+        response.write('<br>Other Names are : <br>');
+
+        var list=snap.list.val()
+        list.forEach(element => {
+            
+         response.write('<br>'+element);
+
         response.write('Current Name is : '+JSON.stringify(snap.name));
         response.write('<br>Other Names are : <br>');
 
@@ -42,6 +53,8 @@ exports.dml_viewall= functions.https.onRequest((request, response) => {
 
         });
         response.end()
+        });
+        response.end()*/
 
     });
 
