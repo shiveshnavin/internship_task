@@ -35,8 +35,8 @@ exports.dml_viewall= functions.https.onRequest((request, response) => {
         response.write('Current Name is : '+JSON.stringify(snap.name));
         response.write('<br>Other Names are : <br>');
 
-        var names=snap.names.val()
-        names.forEach(element => {
+        var list=snap.list.val()
+        list.forEach(element => {
             
          response.write('<br>'+element);
 
@@ -53,10 +53,10 @@ exports.dml_update= functions.https.onRequest((request, response) => {
  
     admin.database().ref('/domilearn').once('value').then(function(snap){
 
-        var randomIndex=Math.random(0,list.length())
+        var randomIndex=Math.random(0,list.size())
         response.write('Current Name was : '+JSON.stringify(snap.name));
-        response.write('<br>Set New Name to : '+JSON.stringify(snap.names[randomIndex]));
-        admin.database().ref('/domilearn/name').set(snap.names[randomIndex])
+        response.write('<br>Set New Name to : '+JSON.stringify(snap.list[randomIndex]));
+        admin.database().ref('/domilearn/name').set(snap.list[randomIndex])
         response.end()
 
     })
