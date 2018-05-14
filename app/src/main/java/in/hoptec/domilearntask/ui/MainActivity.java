@@ -43,6 +43,10 @@ public class MainActivity extends BaseActivity {
         copy=(AppCompatButton)findViewById(R.id.copy);
         browse=(AppCompatButton)findViewById(R.id.browse);
 
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        final Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+
+
         nameReference=domilearn.child("name");
         nameReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -56,9 +60,8 @@ public class MainActivity extends BaseActivity {
                     name.setText("No Data !");
 
                 try {
-                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                    Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-                    r.play();
+                    if(r!=null&&!r.isPlaying())
+                       r.play();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
