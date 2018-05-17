@@ -14,17 +14,17 @@ import java.util.ArrayList;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-    public static String DB_NAME = "Names.db";
+    public static String DB_NAME = "Names";
 
 
-    public DbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    public DbHelper(Context context ) {
+        super(context, DB_NAME, null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS "+DB_NAME+" (id integer primary key AUTO_INCREMENT,name text);");
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS "+DB_NAME+" (id integer primary key,name text);");
 
     }
 
@@ -39,6 +39,7 @@ public class DbHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db=getWritableDatabase();
         db.execSQL("INSERT INTO "+DB_NAME+" (name) VALUES (\""+name+"\"");
+        Log.e("DB","Inserted "+name);
 
 
     }
@@ -51,7 +52,7 @@ public class DbHelper extends SQLiteOpenHelper {
         cr.moveToFirst();
         while(true)
         {
-            Log.e("DB","Added "+cr.getString(i));
+            Log.e("DB","Read "+cr.getString(i));
             names.add(cr.getString(i++));
             cr.moveToNext();
             if(cr.isLast())

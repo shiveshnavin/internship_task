@@ -12,6 +12,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,9 +22,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 
+import java.util.List;
+
 import in.hoptec.domilearntask.BaseActivity;
 import in.hoptec.domilearntask.R;
+import in.hoptec.domilearntask.api.Name;
+import in.hoptec.domilearntask.api.NameService;
 import in.hoptec.domilearntask.utils.Constants;
+import in.hoptec.domilearntask.utils.DbHelper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends BaseActivity {
 
@@ -96,16 +107,63 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        browse.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                dbtest();
+                return false;
+            }
+        });
 
     }
 
     private void dbtest ( ){
 
-        ;
+
+        Log.e("db","TESTING");
+        Retrofit retrofit=new Retrofit.Builder().baseUrl("https://us-central1-test-a0930.cloudfunctions.net")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        NameService nameService=retrofit.create(NameService.class);
+
+        Call<List<String>> nameCall=nameService.getNames();
+        nameCall.enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+
+                DbHelper db=new DbHelper(MainActivity.this );
+
+                for(int i=0;i<response.body().size();i++)
+                {
+                    db.insertName(response.body().get(i) );
+                }
+
+                readNamesFromDB();
+
+            }
+
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+
+                Log.e("Db","Failed "+t.getMessage());
+            }
+        });
 
 
     };
 
 
+    private void readNamesFromDB ( ){
+
+        DbHelper db=new DbHelper(MainActivity.this);
+        List<String > names=db.getNames();
+
+        for(int i=0;i<names.size();i++)
+        {
+            Log.e("readNamesFromDB",names.get(i));
+        }
+
+
+    };
 
 }
