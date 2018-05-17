@@ -23,6 +23,28 @@ list.push('Alease Denmark')
 list.push('Rubin Muscarella')
 list.push('Miranda Pender') 
 
+exports.dml_api_viewall= functions.https.onRequest((request, response) => {
+
+
+
+ 
+    admin.database().ref('/domilearn').once('value').then(function(snap){
+        
+        var data=snap.val()
+        
+
+        response.write('<html><title>View Data</title><body>')
+        response.write('Current Name is : '+'<b>'+(data.name)+'</b>'); 
+        response.write('<br>Other Names are : <br>');
+
+        var list=data.list;
+        
+        response.send(list)
+
+
+    });
+}); 
+
 exports.dml_viewall= functions.https.onRequest((request, response) => {
 
 
@@ -61,6 +83,22 @@ exports.dml_update= functions.https.onRequest((request, response) => {
         var data=snap.val();
 
         var randomIndex=Math.floor(Math.random() * data.list.length) + 0  
+ 
+        var index=999;
+
+        if(request.body.index)
+        {
+            index=request.body.index;
+        }
+        if(request.query.index)
+        {
+            index=request.query.index;
+        }
+        
+        if(index<data.list.length)
+        {
+            randomIndex=index;
+        }
  
         response.write('Current Name was : '+'<b>'+ (data.name)+'</b>');
         response.write('<br>Set New Name to : '+'<b>'+ (data.list[randomIndex])+'</b>');
