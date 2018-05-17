@@ -55,17 +55,14 @@ public class DbHelper extends SQLiteOpenHelper {
     {
         ArrayList<String > names=new ArrayList<>();
         Cursor cr=getReadableDatabase().rawQuery("SELECT * FROM "+DB_NAME,null);
-        cr.moveToFirst();
-        while(true)
+         while(cr.moveToNext())
         {
             Log.e("DB","Read "+cr.getString(1));
             names.add(cr.getString(1));
             cr.moveToNext();
-            if(cr.isLast())
-            {
-                break;
-            }
+
         }
+
         return names;
     }
 

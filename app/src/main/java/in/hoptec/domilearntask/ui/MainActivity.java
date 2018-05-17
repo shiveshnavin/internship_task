@@ -107,10 +107,19 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        copy.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                testnameGet();
+                return false;
+            }
+        });
         browse.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                dbtest();
+
+                testnamePost();
                 return false;
             }
         });
@@ -152,6 +161,57 @@ public class MainActivity extends BaseActivity {
 
     };
 
+
+    private void testnamePost ( ){
+
+        ;
+        Retrofit retrofit=new Retrofit.Builder().baseUrl("https://us-central1-test-a0930.cloudfunctions.net")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        NameService service=retrofit.create(NameService.class);
+        Call<Name > nameCall=service.postName("2");
+
+        nameCall.enqueue(new Callback<Name>() {
+            @Override
+            public void onResponse(Call<Name> call, Response<Name> response) {
+                DbHelper helper=new DbHelper(MainActivity.this);
+                helper.reCreate();
+                helper.insertName(response.body().name);
+                helper.getNames();
+            }
+
+            @Override
+            public void onFailure(Call<Name> call, Throwable t) {
+
+            }
+        });
+
+    };
+    private void testnameGet ( ){
+
+        ;
+        Retrofit retrofit=new Retrofit.Builder().baseUrl("https://us-central1-test-a0930.cloudfunctions.net")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        NameService service=retrofit.create(NameService.class);
+        Call<Name > nameCall=service.getName("2");
+
+        nameCall.enqueue(new Callback<Name>() {
+            @Override
+            public void onResponse(Call<Name> call, Response<Name> response) {
+                DbHelper helper=new DbHelper(MainActivity.this);
+                helper.reCreate();
+                helper.insertName(response.body().name);
+                helper.getNames();
+            }
+
+            @Override
+            public void onFailure(Call<Name> call, Throwable t) {
+
+            }
+        });
+
+    };
 
     private void readNamesFromDB ( ){
 
