@@ -131,7 +131,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
 
-                DbHelper db=new DbHelper(MainActivity.this );
+                DbHelper db=new DbHelper(MainActivity.this );db.reCreate();
 
                 for(int i=0;i<response.body().size();i++)
                 {
@@ -160,7 +160,7 @@ public class MainActivity extends BaseActivity {
 
         for(int i=0;i<names.size();i++)
         {
-            Log.e("readNamesFromDB",names.get(i));
+            Log.i("readNamesFromDB",names.get(i));
         }
 
 

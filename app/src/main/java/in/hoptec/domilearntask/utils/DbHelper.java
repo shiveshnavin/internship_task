@@ -27,7 +27,14 @@ public class DbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS "+DB_NAME+" (id integer primary key,name text);");
 
     }
+    public void reCreate( ) {
 
+        SQLiteDatabase sqLiteDatabase=getWritableDatabase();
+
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+DB_NAME+"");
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS "+DB_NAME+" (id integer primary key,name text);");
+
+    }
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
@@ -38,7 +45,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public void insertName(String name)
     {
         SQLiteDatabase db=getWritableDatabase();
-        db.execSQL("INSERT INTO "+DB_NAME+" (name) VALUES (\""+name+"\"");
+        db.execSQL("INSERT INTO "+DB_NAME+" (name) VALUES ('"+name+"');");
         Log.e("DB","Inserted "+name);
 
 
@@ -48,12 +55,11 @@ public class DbHelper extends SQLiteOpenHelper {
     {
         ArrayList<String > names=new ArrayList<>();
         Cursor cr=getReadableDatabase().rawQuery("SELECT * FROM "+DB_NAME,null);
-        int i=0;
         cr.moveToFirst();
         while(true)
         {
-            Log.e("DB","Read "+cr.getString(i));
-            names.add(cr.getString(i++));
+            Log.e("DB","Read "+cr.getString(1));
+            names.add(cr.getString(1));
             cr.moveToNext();
             if(cr.isLast())
             {
